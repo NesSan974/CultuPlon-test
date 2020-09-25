@@ -1,0 +1,55 @@
+Create Table USERS(
+	IdUser INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+	Nom VARCHAR(20) NOT NULL,
+	Prenom VARCHAR(20) NOT NULL,
+	Pseudo VARCHAR(20) NOT NULL,
+	Age INTEGER NOT NULL,
+	Email VARCHAR(40) NOT NULL
+    
+);
+
+Create Table ORDINATEURS(
+	IdOrd INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+	Nom VARCHAR(20) NOT NULL
+);
+
+Create Table ATTRIBUER(
+
+	IdAttr INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+
+	RefOrd INTEGER,
+	RefUser INT,
+
+	FOREIGN KEY (RefOrd) REFERENCES ORDINATEURS(IdOrd),	
+	FOREIGN KEY (RefUser) REFERENCES USERS(IdUser),
+
+	Date DATE NOT NULL,
+	Duration INTEGER NOT NULL
+
+);
+
+
+
+INSERT INTO USERS(prenom, nom, pseudo, age, email)
+ VALUES
+ ('rebecca', 'Shanahan', 'rshana', 50, 'Rebecca@gmail,.com'),
+ ('tom', 'Clure', 'tclu', 35, 'tom@gmail.com'),
+ ('clementine', 'Vi', 'cvi', 54, 'clementine@gmail.com'),
+ ('jules', 'Moilesel', 'jmois', 42, 'mules@gmail.com'),
+ ('maxime', 'Issier', 'miss', 48, 'maxime@gmail.com'),
+ ('martin', 'Killaw', 'mkill', 18, 'martin@gmail.com'),
+ ('olivier', 'Andry', 'oand', 65, 'olivier@gmail.com');
+
+
+
+INSERT INTO ORDINATEURS(nom)
+ VALUES
+ ('ORD-55'), ('ORD-57'), ('ORD-55'),
+ ('ORD-75'), ('ORD-77'), ('ORD-72'),
+ ('ORD-84'), ('ORD-88'), ('ORD-87'),
+ ('ORD-95'), ('ORD-97'), ('ORD-95');
+
+
+insert INTO ATTRIBUER (RefOrd, RefUser, date, duration)
+VALUES (1,1,'2020-02-02', 2);
+
