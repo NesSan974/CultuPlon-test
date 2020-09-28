@@ -38,7 +38,7 @@ $con = connexionBDD();
     <form class="search" method="post">
 
       <input type="text" name="P_ordName">
-      <input type="input" class="btn btn-success" value="Ajouter/Créer">
+      <input type="submit" class="btn btn-success" value="Ajouter/Créer">
 
     </form>
 
@@ -81,6 +81,9 @@ $con = connexionBDD();
       if ( isset($_GET["suppr"]) && isset( $_GET['ord']) ){
         echo 'suppre de ' . $_GET['ord'];
         SupprimerOrdinateur($con, $_GET['ord']);
+        echo ' <script> document.location.href = \'computers.php\'; </script>';
+
+
       } else if ( isset( $_GET['ord']) ){
         echo 'mofication de '. $_GET['ord'];
       }

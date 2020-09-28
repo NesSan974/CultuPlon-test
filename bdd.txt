@@ -2,15 +2,15 @@ Create Table USERS(
 	IdUser INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 	Nom VARCHAR(20) NOT NULL,
 	Prenom VARCHAR(20) NOT NULL,
-	Pseudo VARCHAR(20) NOT NULL,
+	Pseudo VARCHAR(20) UNIQUE NOT NULL,
 	Age INTEGER NOT NULL,
-	Email VARCHAR(40) NOT NULL
+	Email VARCHAR(40) UNIQUE NOT NULL
     
 );
 
 Create Table ORDINATEURS(
 	IdOrd INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
-	Nom VARCHAR(20) NOT NULL
+	Nom VARCHAR(20) UNIQUE NOT NULL
 );
 
 Create Table ATTRIBUER(
@@ -20,15 +20,15 @@ Create Table ATTRIBUER(
 	RefOrd INTEGER,
 	RefUser INT,
 
-	FOREIGN KEY (RefOrd) REFERENCES ORDINATEURS(IdOrd),	
-	FOREIGN KEY (RefUser) REFERENCES USERS(IdUser),
+	FOREIGN KEY (RefOrd) REFERENCES ORDINATEURS(IdOrd) ON DELETE CASCADE ON UPDATE CASCADE,	
+	FOREIGN KEY (RefUser) REFERENCES USERS(IdUser)ON DELETE CASCADE ON UPDATE CASCADE,
 
-	Date DATE NOT NULL,
+	Date DATETIME NOT NULL,
 	Duration INTEGER NOT NULL
 
 );
 
-
+-------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO USERS(prenom, nom, pseudo, age, email)
  VALUES
@@ -44,12 +44,22 @@ INSERT INTO USERS(prenom, nom, pseudo, age, email)
 
 INSERT INTO ORDINATEURS(nom)
  VALUES
- ('ORD-55'), ('ORD-57'), ('ORD-55'),
+ ('ORD-55'), ('ORD-57'), ('ORD-51'),
  ('ORD-75'), ('ORD-77'), ('ORD-72'),
  ('ORD-84'), ('ORD-88'), ('ORD-87'),
- ('ORD-95'), ('ORD-97'), ('ORD-95');
+ ('ORD-95'), ('ORD-97'), ('ORD-2');
 
 
 insert INTO ATTRIBUER (RefOrd, RefUser, date, duration)
-VALUES (1,1,'2020-02-02', 2);
+VALUES (3,4,'2020-03-04 15:00:00', 3),
+(2,5,'2020-01-04 9:00:00', 2),
+(4,2,'2020-09-13 8:00:00', 5);
 
+
+ -----------------------------------------------------------------------------------------
+
+
+
+connexion securisé
+modif nom ordi
+modif reservation

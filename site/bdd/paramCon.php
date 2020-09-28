@@ -1,13 +1,13 @@
 <?php
 // information sur les paramètres de connexion a la base de données
 
-$user="XXXXXX";
+$user="XXXX";
 
-$pass="XXXXXXXXXXXX";
+$pass="XXX";
 
-$dbname="XXXXXXXXXXXXX";
+$dbname="XXXXXXX";
 
 $lehost="localhost";
 
-$leport="XXXX" //5432 la plupart du temps;
+$leport="5432";
 ?>

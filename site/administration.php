@@ -33,7 +33,7 @@ $con = connexionBDD();
 
     <h1> Pannel d'administration <h1>
 
-    <button onclick="window.location.href = 'reserver.php';" type="button" style ="height" class="btn btn-primary">Reserver</button>
+    <button onclick="window.location.href = 'reserver.php';" type="button" class="btn btn-primary">Reserver</button>
   
 
     <h3>Derniere Reservation :</h3>
@@ -47,8 +47,15 @@ $con = connexionBDD();
       foreach ($att as $ligne)
       {
         $i++;
-        echo "<p>" . $ligne["pseudo"] . "  -  " . $ligne["nom"] . "<p>";
+        echo "<p>" . $ligne["pseudo"] . "  -  " . $ligne["nom"] . ' - ' . $ligne["date"] . $ligne["duration"] ."H <p>";
+        if ($i >=5) {
+          break;
+        }
       }
+
+      echo ' <button onclick="window.location.href = \'attribution.php\';" type="button" class="btn btn-dark">Tout voir</button>';
+
+
     ?>
 
   </div>

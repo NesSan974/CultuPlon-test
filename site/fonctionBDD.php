@@ -4,34 +4,13 @@
 
 function ListerAttribuer($connex)
 {
-    $sql = "SELECT ATTRIBUER.idattr, ATTRIBUER.date, ATTRIBUER.duration, USERS.pseudo, ORDINATEURS.nom FROM ATTRIBUER INNER JOIN USERS ON refuser=iduser INNER JOIN ORDINATEURS ON reford=idord order by idattr ASC; ";
-    $res = $connex->query($sql);
-    return $res;
-}
-
-function ListerAttribuerByOrd($connex, $ord){
-    $sql = "SELECT ATTRIBUER.idattr, ATTRIBUER.date, ATTRIBUER.duration, USERS.pseudo, ORDINATEURS.nom FROM ATTRIBUER INNER JOIN USERS ON refuser=iduser INNER JOIN ORDINATEURS ON reford=idord WHERE ORDINATEURS.nom='". $ord ."'; ";
-    $res = $connex->query($sql);
-    return $res;
-}
-
-
-function AttribuerUpdate($connex,$id, $idord, $date, $duration){
-
-    $sql = "UPDATE ATTRIBUER SET ATTRIBUER.date = '". $date ."', ATTRIBUER.duration = ". $duration .", ATTRIBUER.reford = '". $idord ."' WHERE idattr =".$id."; ";//echo $sql;
+    $sql = "SELECT ATTRIBUER.idattr, ATTRIBUER.date, ATTRIBUER.duration, USERS.pseudo, ORDINATEURS.nom FROM ATTRIBUER INNER JOIN USERS ON refuser=iduser INNER JOIN ORDINATEURS ON reford=idord order by idattr; ";
     $res = $connex->query($sql);
     return $res;
 }
 
 function AjouterAttribuer($connex, $refuser, $reford, $date, $duration){
-    $sql = "INSERT INTO ATTRIBUER (RefUser , RefOrd , Date , Duration) VALUES ('" . $refuser ."','".$reford."','".$date."','".$duration."')";
-    $res = $connex->query($sql);
-    return $res;
-}
-
-
-function SupprimerAttribution($connex , $id){
-    $sql = "DELETE FROM ATTRIBUER WHERE idattr=". $id .";";
+    $sql = "INSERT INTO USERS(RefUser , RefOrd , Date , Duration) VALUES ('" . $refuser ."','".$reford."','".$date."','".$duration."')";
     $res = $connex->query($sql);
     return $res;
 }
@@ -52,23 +31,8 @@ function SupprimerUser($connex, $pseudo){
     return $res;
 }
 
-function GetUserIdByPseudo($connex, $pseudo){
-    $sql = "SELECT * FROM USERS WHERE USERS.pseudo ='".$pseudo."';";
-    $prep = $connex->query($sql);
-    $res = $prep->fetch(PDO::FETCH_NUM); //pour avoir un tableau
-    return $res;
-}
-
-
-function UserUpdate($connex,$id, $pseudo, $age, $mail){
-    $sql = "UPDATE USERS SET pseudo = '". $pseudo ."', age = ". $age .", email = '". $mail ."' WHERE iduser =".$id."; ";//echo $sql;
-    $res = $connex->query($sql);
-    return $res;
-}
-
 function listerUsers($connex){
     $sql = "SELECT * FROM USERS order by iduser";
-    
     $res = $connex->query($sql);
     return $res;
 }
@@ -91,7 +55,7 @@ function ListerReservationByUser($connex, $pseudo){
 //ORDINATAEURS
 function AjouterOrdinateur($connex, $nom)
 {
-    $sql = "INSERT INTO ORDINATEURS (nom) VALUES ('" . $nom ."')";
+    $sql = "INSERT INTO USERS(nom) VALUES ('" . $nom ."')";
     $res = $connex->query($sql);
     return $res;
 }
@@ -104,18 +68,12 @@ function SupprimerOrdinateur($connex, $nom){
 }
 
 function listerOrdinateurs($connex){
-    $sql = "SELECT idord, nom FROM ORDINATEURS order by idord";
+    $sql = "SELECT * FROM ORDINATEURS order by idord";
     $res = $connex->query($sql);
     return $res;
 }
 
 
-function GetOrdIdByName($connex, $nom){
-    $sql = "SELECT idord FROM ORDINATEURS WHERE ORDINATEURS.nom ='".$nom."';";
-    $prep = $connex->query($sql);
-    $res = $prep->fetch(PDO::FETCH_NUM); //pour avoir un tableau
-    return $res;
-}
 
 function OrdinateurRecherche($connex, $chaine){
 $sql="SELECT idord, nom FROM ORDINATEURS WHERE nom LIKE '%". $chaine ."%';";

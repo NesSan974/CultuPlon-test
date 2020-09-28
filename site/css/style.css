@@ -34,6 +34,7 @@ div.section{
     height: 100%;
     margin-left :10vw;
     margin-right :10vw;
+    padding:20px;
     margin-top: 0;
     background-color : white;  
 }
@@ -66,4 +67,8 @@ form.search{
     margin-top : 10vh;
     width: 100%;
     text-align: center;
+}
+
+select{
+    width:10vw
 }
