@@ -10,7 +10,7 @@ $con = connexionBDD();
 
 <head>
   <meta charset="utf-8">
-  <title>title</title>
+  <title>CultuPlon - reserver</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <meta name="author" content="">
   <meta name="description" content="">
@@ -22,13 +22,7 @@ $con = connexionBDD();
   <?php include('./php/header.php'); ?>
 
   <div class="section">
-    <nav>
-      <div class="btn-group" role="group">
-        <button onclick="window.location.href = 'users.php';" type="button" class="btn btn-secondary">Utilisateurs</button>
-        <button onclick="window.location.href = 'administration.php';" type="button" class="btn btn-secondary">Home</button>
-        <button onclick="window.location.href = 'computers.php';" type="button" class="btn btn-secondary">Ordinateurs</button>
-      </div>
-    </nav>
+    <?php include ('./php/nav.php');?>
 
     <h1>Reservation</h1>
     
@@ -121,7 +115,7 @@ $con = connexionBDD();
                   if ( $jourDB == $dateqsd[8].$dateqsd[9] ) {
 
                     if ( ($heureDB <= $_POST["P_Hdeb"] && $heureDB + $ligne['duration'] > $_POST["P_Hdeb"] ) || ($heureDB >= $_POST["P_Hdeb"] && $heureDB < $_POST["P_Hdeb"] + $_POST["P_duration"]) ) {
-                      echo 'les horraires se superposent';
+                      echo 'Plage Horraire déjà utilisé par cet ordinateur';
                       $isOk=false;
                       break;
                       
@@ -133,8 +127,6 @@ $con = connexionBDD();
               }
             
               if ($isOk) {
-
-
               
               $iduser = GetUserIdByPseudo($con, $_POST['P_pseudo']);
               $idord = GetOrdIdByName($con, $_POST['P_ord']);

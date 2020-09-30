@@ -23,12 +23,7 @@ $con = connexionBDD();
 <body>
   <?php include('./php/header.php'); ?>
   <div class="section">
-    <nav>
-      <div class="btn-group" role="group">
-        <button onclick="window.location.href = 'users.php';" type="button" class="btn btn-secondary">Utilisateurs</button>
-        <button onclick="window.location.href = 'computers.php';" type="button" class="btn btn-secondary">Oridnateurs</button>
-      </div>
-    </nav>
+    <?php include ('./php/nav.php');?>
       
 
     <h1> Pannel d'administration <h1>
@@ -47,12 +42,14 @@ $con = connexionBDD();
       foreach ($att as $ligne)
       {
         $i++;
-        echo "<p>" . $ligne["pseudo"] . "  -  " . $ligne["nom"] . ' - ' . $ligne["date"] . $ligne["duration"] ."H <p>";
-        if ($i >=5) {
+        echo '<p> <button type="button" onclick="window.location.href = \'users.php?modif=1&user=' . $ligne["pseudo"] . '\';"  class="btn btn-link">' . $ligne["pseudo"] . "</button>  -  " . $ligne["nom"] . ' - ' . $ligne["date"] . ' ' .$ligne["duration"] ."H ";
+        echo '<button onclick="window.location.href = \'modifReservation.php?idattr='. $ligne['idattr'] .'\';" type="button" class="btn btn-warning">Modifier</button></p>';
+        if ($i >=3) {
           break;
         }
       }
 
+      
       echo ' <button onclick="window.location.href = \'attribution.php\';" type="button" class="btn btn-dark">Tout voir</button>';
 
 

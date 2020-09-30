@@ -1,11 +1,11 @@
 <?php
 // information sur les paramètres de connexion a la base de données
 
-$user="XXXX";
+$user="XXXXXXXXXXXXX";
 
-$pass="XXX";
+$pass="XXXXXXXXXXXXX";
 
-$dbname="XXXXXXX";
+$dbname="XXXXXXXXXXXXX";
 
 $lehost="localhost";
 

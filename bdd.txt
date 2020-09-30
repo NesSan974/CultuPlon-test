@@ -28,6 +28,11 @@ Create Table ATTRIBUER(
 
 );
 
+Create Table CONNEXION(
+	IdCon INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+	password VARCHAR(65) UNIQUE NOT NULL
+);
+
 -------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO USERS(prenom, nom, pseudo, age, email)
@@ -39,7 +44,6 @@ INSERT INTO USERS(prenom, nom, pseudo, age, email)
  ('maxime', 'Issier', 'miss', 48, 'maxime@gmail.com'),
  ('martin', 'Killaw', 'mkill', 18, 'martin@gmail.com'),
  ('olivier', 'Andry', 'oand', 65, 'olivier@gmail.com');
-
 
 
 INSERT INTO ORDINATEURS(nom)
@@ -54,6 +58,11 @@ insert INTO ATTRIBUER (RefOrd, RefUser, date, duration)
 VALUES (3,4,'2020-03-04 15:00:00', 3),
 (2,5,'2020-01-04 9:00:00', 2),
 (4,2,'2020-09-13 8:00:00', 5);
+
+
+INSERT INTO CONNEXION (password)
+ VALUES
+ ('f13bdd573de25d26725f71fa65f37171ed0e63764c584a5b4eadad50e40ccd2c' );
 
 
  -----------------------------------------------------------------------------------------

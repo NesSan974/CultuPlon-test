@@ -23,14 +23,7 @@ $con = connexionBDD();
 <body>
   <?php include('./php/header.php'); ?>
   <div class="section">
-
-    <nav>
-      <div class="btn-group" role="group">
-        <button onclick="window.location.href = 'users.php';" type="button" class="btn btn-secondary">Utilisateurs</button>
-        <button onclick="window.location.href = 'administration.php';" type="button" class="btn btn-secondary">Home</button>
-        <button onclick="window.location.href = 'computers.php';" type="button" class="btn btn-secondary">Ordinateurs</button>
-      </div>
-    </nav>
+  <?php include ('./php/nav.php');?>
 
 
     <h1> Ordinateurs <h1>
@@ -42,7 +35,7 @@ $con = connexionBDD();
 
     </form>
 
-    <form class="search" method="POST">
+    <form class="search" method="POST" action="computers.php">
       <input type="text" name="rechercher" placeholder="Rechercher"> 
       <input type="submit" class="btn btn-primary" value=" Go ! ">
     </form>
@@ -50,16 +43,25 @@ $con = connexionBDD();
 
     <?php
 
+    if ( !isset( $_POST['rechercher'] ) && !isset($_GET['modif']) && !isset($_GET['suppr'])) {
+      $res = listerOrdinateurs($con);
+      foreach ($res as $ligne) {
+        echo $ligne["nom"];
+        echo '<button onclick="window.location.href = \'?modif=1&ord='. $ligne["nom"] .'\';" type="button" class="btn btn-warning">Modifier</button>';
+        echo '<button onclick="window.location.href = \'?suppr=1&ord='. $ligne["nom"] .' \';" type="button" class="btn btn-danger">Supprimer</button><br>';
+      }
+    }
 
 
 
 
-      if (isset($_POST['P_ordName'])) {
+      //ajout
+      if (isset($_POST['P_ordName']) && trim($_POST['P_ordName']) != '') {
         AjouterOrdinateur($con, $_POST['P_ordName']);
       }
 
 
-
+      //recherche
       if ( isset($_POST['rechercher']) ) {
         $res = OrdinateurRecherche($con, $_POST['rechercher']);
 
@@ -67,7 +69,7 @@ $con = connexionBDD();
             foreach ($res as $ligne) {
                 echo '<tr>';
                     echo '<td> '. $ligne["nom"] . "</td>";
-                    echo '<td> '. '<button onclick="window.location.href = \'?ord='. $ligne["nom"] .'\';" type="button" class="btn btn-warning">Modifier</button>'. '</td>';
+                    echo '<td> '. '<button onclick="window.location.href = \'?modif=1&ord='. $ligne["nom"] .'\';" type="button" class="btn btn-warning">Modifier</button>'. '</td>';
                     echo '<td> '. '<button onclick="window.location.href = \'?suppr=1&ord='. $ligne["nom"] .' \';" type="button" class="btn btn-danger">Supprimer</button>'. '</td>';
                 echo '</tr>';
             }
@@ -75,19 +77,39 @@ $con = connexionBDD();
       }
 
 
+      if (isset( $_GET['ord'])) {
+      
+        if ( isset($_GET["suppr"]) ){
+          echo 'suppre de ' . $_GET['ord'];
+          SupprimerOrdinateur($con, $_GET['ord']);
+          echo ' <script> document.location.href = \'computers.php\'; </script>';
 
+        } else if ( isset( $_GET['modif']) && $_GET['modif'] == 1){
+          
+          
+          echo 'mofication de '. $_GET['ord'];
 
+          
+          echo '
+            <h3 modifier :</h3>
 
-      if ( isset($_GET["suppr"]) && isset( $_GET['ord']) ){
-        echo 'suppre de ' . $_GET['ord'];
-        SupprimerOrdinateur($con, $_GET['ord']);
-        echo ' <script> document.location.href = \'computers.php\'; </script>';
+            <form method="POST" action="?modif=2&ord=' . $_GET['ord'] .'">
 
+              <p>Nouveau nom : <input type="text" name="P_mod-ord"> </p>
+              <button type="submit" class="btn btn-warning">Modifier</button>
+              <button onclick="window.location.href = \'?suppr=1&ord='. $_GET['ord'] .' \';" type="button" class="btn btn-danger">Supprimer</button><br>
+            
+            </form>
+          ';
+          
+        }else if ( isset( $_GET['modif']) && $_GET['modif'] == 2){
 
-      } else if ( isset( $_GET['ord']) ){
-        echo 'mofication de '. $_GET['ord'];
+          $id = GetOrdIdByName( $con, $_GET['ord'] )[0];
+
+          OrdinateurUpdate($con, $id, $_POST['P_mod-ord']);
+          echo ' <script> document.location.href = \'computers.php\'; </script>';
+        }
       }
-
 
     ?>
 

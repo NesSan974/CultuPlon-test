@@ -12,7 +12,7 @@ $con = connexionBDD();
 
 <head>
   <meta charset="utf-8">
-  <title>title</title>
+  <title>CultuPlon - reservation</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <meta name="author" content="">
   <meta name="description" content="">
@@ -25,27 +25,27 @@ $con = connexionBDD();
 <?php include('./php/header.php'); ?>
 
 <div class="section">
-<?php include ('./php/nav.php');?>
+  <?php include ('./php/nav.php');?>
 
-  
-<h3>Toutes les Reservations :</h3>
+    
+  <h3>Toutes les Reservations :</h3>
 
-<?php
+  <?php
 
-  $att = ListerAttribuer($con);
+      $att = ListerAttribuer($con);
+
+      $i=0;
+
+      foreach ($att as $ligne)
+      {
+        echo '<p> <button type="button" onclick="window.location.href = \'users.php?modif=1&user=' . $ligne["pseudo"] . '\';"  class="btn btn-link">' . $ligne["pseudo"] . "</button>  -  " . $ligne["nom"] . ' - ' . $ligne["date"] . ' ' .$ligne["duration"] ."H ";
+        echo '<button onclick="window.location.href = \'modifReservation.php?idattr='. $ligne['idattr'] .'\';" type="button" class="btn btn-warning">Modifier</button></p>';
+
+      }
 
 
-  foreach ($att as $ligne)
-  {
+    ?>
 
-    echo "<p>" . $ligne["pseudo"] . "  -  " . $ligne["nom"] . ' - ' . $ligne["date"] . '  ' . $ligne["duration"] ."H <p>";
-
-  }
-
-  
-
-?>
-  
 </div>
 
 <?php include('./php/footer.php');?>

@@ -24,13 +24,7 @@ $con = connexionBDD();
     <?php include('./php/header.php'); ?>
     <div class="section">
 
-      <nav>
-        <div class="btn-group" role="group">
-          <button onclick="window.location.href = 'users.php';" type="button" class="btn btn-secondary">Utilisateurs</button>
-          <button onclick="window.location.href = 'administration.php';" type="button" class="btn btn-secondary">Home</button>
-          <button onclick="window.location.href = 'computers.php';" type="button" class="btn btn-secondary">Ordinateurs</button>
-        </div>
-      </nav>
+    <?php include ('./php/nav.php');?>
 
 
       <h1> Utilisateurs </h1>
@@ -55,12 +49,10 @@ $con = connexionBDD();
 
         if (isset($_POST['P_new-submit'])) {
 
-
           if ( $_POST['P_new-nom'] !='' && $_POST['P_new-prenom'] !='' && $_POST['P_new-pseudo'] !='' && $_POST['P_new-age'] !='' && $_POST['P_new-mail'] !='') {
             AjouterUser($con, $_POST['P_new-nom'], $_POST['P_new-prenom'], $_POST['P_new-pseudo'], $_POST['P_new-age'], $_POST['P_new-mail']);
             echo ' <div class="alert alert-success" role="alert">  Ajout de '.$_POST['P_new-pseudo'].' reussi </div>';
           }
-
 
           //message d'erreur approprié
 
@@ -86,7 +78,6 @@ $con = connexionBDD();
           
         }
 
-
       ?>
 
 
@@ -98,28 +89,97 @@ $con = connexionBDD();
 
       <?php
 
-      //rebouclage
 
+
+
+    if ( !isset($_POST['rechercheUser']) && !isset($_GET['modif']) && !isset($_GET['suppr']) ) {
+    
+      $res = listerUsers($con);
+      echo '<div class="container">';
+        foreach ($res as $ligne) {
+
+          echo '
+          
+            
+              <div class="row">
+                <div class="col">'
+                  . $ligne["nom"] .
+                '</div>
+                <div class="col">'
+                  . $ligne["prenom"] .
+                '</div>
+                <div class="col">'
+                  . $ligne["pseudo"] .
+                '</div>
+                <div class="col">
+                  <button onclick="window.location.href = \'?modif=1&user='. $ligne["pseudo"] .'\'" type="button" class="btn btn-warning">Modifier</button>
+                </div>
+                <div class="col">
+                  <button onclick="window.location.href = \'reservation.php?user='. $ligne["pseudo"] . '\'" type="button" class="btn btn-info">Voir reservation</button>
+                </div>
+                <div class="col">
+                 <button onclick="window.location.href = \'?suppr=1&user='. $ligne["pseudo"] .'\'" type="button" class="btn btn-danger">Supprimer</button><br>
+                </div>
+
+
+              </div>
+            
+          
+          ';
+                // echo '<button onclick="window.location.href = \'?modif=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-warning">Modifier</button>' ;
+                // echo '<button onclick="window.location.href = \'reservation.php?user='. $ligne["pseudo"] . '\';" type="button" class="btn btn-info">Voir reservation</button>';
+                // echo '<button onclick="window.location.href = \'?suppr=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-danger">Supprimer</button><br>';
+        }
+      echo' </div>';
+    }
+
+
+
+      //rebouclage
 
       //--recherche
 
       if ( isset($_POST['rechercheUser']) ) {
         $res = UsersRecherche($con, $_POST['rechercheUser']);
 
-          echo '<table>';
-              foreach ($res as $ligne) {
-                  echo '<tr>';
-                      echo '<td> '. $ligne["nom"] . "</td>";
-                      echo '<td> ' . $ligne["prenom"] . '</td>';
-                      echo '<td> ' . $ligne["pseudo"] . '</td>';
+        echo '<div class="container">';
+        foreach ($res as $ligne) {
 
-                      echo '<td> '. '<button onclick="window.location.href = \'?modif=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-warning">Modifier</button>'. '</td>';
-                      echo '<td> '. '<button onclick="window.location.href = \'?suppr=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-danger">Supprimer</button>'. '</td>';
-                      echo '<td> '. '<button onclick="window.location.href = \'reservation.php?user='. $ligne["pseudo"] . '\';" type="button" class="btn btn-info">Voir reservation</button>'. '</td>';
+          echo '
+          
+            
+              <div class="row">
+                <div class="col">'
+                  . $ligne["nom"] .
+                '</div>
+                <div class="col">'
+                  . $ligne["prenom"] .
+                '</div>
+                <div class="col">'
+                  . $ligne["pseudo"] .
+                '</div>
+                <div class="col">
+                  <button onclick="window.location.href = \'?modif=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-warning">Modifier</button>
+                </div>
+                <div class="col">
+                  <button onclick="window.location.href = \'reservation.php?user='. $ligne["pseudo"] . '\';" type="button" class="btn btn-info">Voir reservation</button>
+                </div>
+                <div class="col">
+                 <button onclick="window.location.href = \'?suppr=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-danger">Supprimer</button><br>
+                </div>
 
-                  echo '</tr>';
-              }
-          echo '</table>';
+
+              </div>
+            
+          
+          ';
+                // echo '<button onclick="window.location.href = \'?modif=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-warning">Modifier</button>' ;
+                // echo '<button onclick="window.location.href = \'reservation.php?user='. $ligne["pseudo"] . '\';" type="button" class="btn btn-info">Voir reservation</button>';
+                // echo '<button onclick="window.location.href = \'?suppr=1&user='. $ligne["pseudo"] .'\';" type="button" class="btn btn-danger">Supprimer</button><br>';
+        }
+      echo' </div>';
+
+
       }
 
 
@@ -132,11 +192,13 @@ $con = connexionBDD();
           echo 'suppression de ' . $_GET['user']. '...';
           SupprimerUser($con,$_GET["user"]);
           echo ' <script> document.location.href = \'users.php\'; </script>'; //pour enleever les "?user=XX"
-
+        }
 
       //--modification user
-        } else if ( isset( $_GET['modif']) ){
-          echo 'mofication de '. $_GET['user'];
+         else if ( isset( $_GET['modif']) ){
+          echo 'modification de <h4>'. $_GET['user'] . '</h4>';
+
+          echo '<button onclick="window.location.href = \'reservation.php?user='. $_GET['user'] . '\';" type="button" class="btn btn-info">Voir reservation</button>';
 
           $pseudo;
           $age;
@@ -148,16 +210,35 @@ $con = connexionBDD();
           $mail = $res[5];
           
           echo '<h3>actuellement :</h3> ';
-          echo 'pseudo : ' . $pseudo;
-          echo 'age : '. $age;
-          echo 'mail : '. $mail;
+          echo '<div class="container">';
+      
+            echo'
+            <div class="col">
+              pseudo : '
+              . $pseudo .
+            '</div>
+            ';
+            echo'
+            <div class="col">
+              age : '
+              . $age .
+            '</div>
+            ';
 
+            echo'
+            <div class="col">
+              e-mail : '
+              . $mail .
+            '</div>
+            ';
+
+          echo' </div>';
             
 
 
           //echo ' <script> document.location.href = \'users.php\'; </script>';
           echo '<h3 modifier :</h3>
-          <div class= "modifier">
+
             <form method="POST">
                   <p>pseudo : <input type="text" name="P_mod-pseudo"> </p>
                   <p>age : <input type="text" name="P_mod-age"> 
@@ -165,22 +246,25 @@ $con = connexionBDD();
                 </br>
                 <input name="P_mod-submit" type="submit" class="btn btn-warning" value="Modifier"> 
             </form>
-          </div>
           ';
 
-          if (isset($_POST['P_mod-pseudo']) && $_POST['P_mod-pseudo'] != ''){
-            $pseudo = $_POST['P_mod-pseudo'];
-          }
-          if (isset($_POST['P_mod-age']) && $_POST['P_mod-age'] != ''){
-            $age = $_POST['P_mod-age'];
-          }
-          if (isset($_POST['P_mod-mail']) && $_POST['P_mod-mail'] != ''){
-            $mail = $_POST['P_mod-mail'];
-          }
-          
-          
-          UserUpdate($con,$res[0], $pseudo, $age, $mail);
+          if (isset($_POST['P_mod-submit'])) {
 
+            if (isset($_POST['P_mod-pseudo']) && trim( $_POST['P_mod-pseudo'] != '') ){
+              $pseudo = $_POST['P_mod-pseudo'];
+            }
+            if (isset($_POST['P_mod-age']) && trim( $_POST['P_mod-age'] != '') ){
+              $age = $_POST['P_mod-age'];
+            }
+            if (isset($_POST['P_mod-mail']) && trim( $_POST['P_mod-mail'] != '')){
+              $mail = $_POST['P_mod-mail'];
+            }
+              
+              UserUpdate($con,$res[0], $pseudo, $age, $mail);
+
+              echo ' <script> document.location.href = \'users.php\'; </script>';
+
+          }
 
         }
       }

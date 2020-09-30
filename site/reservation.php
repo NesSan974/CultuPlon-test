@@ -34,84 +34,34 @@ $con = connexionBDD();
         die();
       }
 
-
       echo 'reservation de '. $_GET['user'];
-
 
       echo '<button onclick="window.location.href = \'reserver.php?user='. $_GET['user'] .'\';" type="button" class="btn btn-primary">Nouvelle Reservation</button>';
 
+      
       $res = ListerReservationByUser($con, $_GET['user']);
 
-      echo '<table>';
-            foreach ($res as $ligne) {
-              
-                echo '<tr>';
-                    echo '<td>no. de resa : ' . $ligne['idattr'] . '  </td>';
-                    echo '<td> date : '. $ligne["date"] . "   </td>";
-                    echo '<td> durée de : ' . $ligne["duration"] . 'H  </td>';
-                    echo '<td> ordi : ' . $ligne["nom"] . '  </td>';
 
-                    echo '<td> '. '<button onclick="window.location.href = \'?modif=1&idattr='. $ligne['idattr'] .'&user='. $_GET['user'] .'\';" type="button"  class="btn btn-warning">Modifier</button>'. '</td>';
-                    echo '<td> '. '<button onclick="window.location.href = \'?suppr=1&idattr='. $ligne['idattr'] .'&user='. $_GET['user'] .'\';" type="button" class="btn btn-danger">Supprimer</button>'. '</td>';
-
-                echo '</tr>';
-            }
-        echo '</table>';
-
-        //rebouclage
-
-        if( isset( $_GET['idattr'])){
-
-          if ( isset($_GET["suppr"])){
-            echo 'suppression de la reservation';
-            SupprimerAttribution($con,$_GET['idattr']);
-            echo ' <script> document.location.href = \'users.php?user=' . $_GET['user'] . '\'; </script>';
-  
-          } else if ( isset( $_GET['modif']) ){
-            echo 'mofication de la reservation n° ' . $_GET['idattr'];
-
-            $res = ListerAttribuerByOrd($connex, $ord);
-            
-            $date;
-            $duration;
-            $ord;
-            echo '<h3 modifier :</h3>
-            <div class= "modifier">
-              <form method="POST">
-                    <p>date : <input type="date" name="P_mod-date"> </p>
-                    <p>durée : <input type="number" name="P_mod-duration"> 
-                    <p>Ordinateurs :  </p> <select name="P_mod-ord" class="form-control">';
+      foreach ($res as $ligne) {
         
-                    $res = listerOrdinateurs($con);
-                    foreach ($res as $ligne) {
-                      echo '<option>'. $ligne['nom'] .'</option> ';
-                    }
-                    echo ' </br>
-                  <input name="P_mod-submit" type="submit" class="btn btn-warning" value="Modifier"> 
-              </form>
-            </div>
-            ';
-          
-            if (isset($_POST['P_mod-submit'])){
-              
-              if (isset($_POST['P_mod-date']) && $_POST['P_mod-date'] != ''){
-                $date = $_POST['P_mod-date'];
-              }
-              if (isset($_POST['P_mod-duration']) && $_POST['P_mod-duration'] != ''){
-                $duration = $_POST['P_mod-duration'];
-              }
-              if (isset($_POST['P_mod-ord']) && $_POST['P_mod-ord'] != ''){
-                $ordID = GetOrdIdByName($con, $_POST['P_mod-ord'])[0];
-              }
-              
-              echo $ordID . ' '. $date . $duration;
-              //AttribuerUpdate($con, $_GET['idattr'], $ordID, $date, $duration);
+        echo '<h4> no. de resa : ' . $ligne['idattr'] . '</h4>';
+        echo '<p> <b>date : </b>'. $ligne["date"];
+        echo ' <b>durée de :  </b>' . $ligne["duration"] . 'H';
+        echo ' <b>ordi :  </b>' . $ligne["nom"] . ' </p>';
+        echo '<button onclick="window.location.href = \'modifReservation.php?idattr='. $ligne['idattr'] .'\';" type="button"  class="btn btn-warning">Modifier</button>';
+        echo '<button onclick="window.location.href = \'?suppr=1&idattr='. $ligne['idattr'] .'&user='. $_GET['user'] .'\';" type="button" class="btn btn-danger">Supprimer</button>';
+      }
 
 
 
-            }  //echo ' <script> document.location.href = \'XX.php\'; </script>';
-          }
-        }
+      if ( isset($_GET["suppr"])){
+        echo 'suppression de la reservation...';
+        SupprimerAttribution($con ,  $_GET['idattr'] ) ;
+        echo ' <script> document.location.href = \'users.php\'; </script>'; //pour enleever les "?user=XX"
+      }
+
+
+
     ?>
 
 
